@@ -20,7 +20,7 @@ class MongoDBHandler:
     def search(self, query):
         results = self.collection.find(
             {'$text': {'$search': query}},
-            {'score': {'$meta': 'textScore'}, '_id': 0, 'id': 1, 'mimeType': 1, 'title': 1, 'quotaBytesUsed': 1, 'owners': 1, 'children_list': 1}
+            {'score': {'$meta': 'textScore'}, '_id': 0, 'id': 1, 'mimeType': 1, 'title': 1, 'quotaBytesUsed': 1, 'owners': 1, 'children_list': 1, 'link':1}
         ).sort([('score', {'$meta': 'textScore'})])
         return list(results)
     # def delete_collection(self):

@@ -223,39 +223,58 @@
 
 
     {% for file in search_result %}
+        {% if file.id == None %} 
         <div class="result">
-            <div class="icon">
-                {% if file.mimeType == "application/vnd.google-apps.shortcut" or  file.mimeType == "application/vnd.google-apps.folder"%}
-                    <svg focusable="false" viewBox="0 0 24 24" height="24px" width="24px" fill="#5f6368" class="a-s-fa-Ha-pa"><g><path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"></path><path d="M0 0h24v24H0z" fill="none"></path></g></svg>
-                {% else %}
+                <div class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" fill="#5f6368" class="a-s-fa-Ha-pa">
+                            <path d="M3 2c-.55 0-1 .45-1 1v18c0 .55.45 1 1 1h18c.55 0 1-.45 1-1V8c0-.55-.45-1-1-1h-7V2H3zm4 16H3v-6h4v6zm0-8H3V4h4v6zm14 10H7c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2v10c0 1.1-.9 2-2 2z"></path>
+                            <path d="M0 0h24v24H0z" fill="none"></path>
+                        </svg>
+                </div>
+                <div class="details">
+                        <a target="_blank" href="{{ file.link }}">
+                            <h3 class="title">{{file.title}}</h3>
+                        </a>
+                        
+                    <p>Owner: <span> {{file.owners}} </span></p>
+                        <button class="download-btn"><a target="_blank" href="{{file.link}}">Open</a></button>
+                </div>
+            </div>
+        {% else%}
+            <div class="result">
+                <div class="icon">
+                    {% if file.mimeType == "application/vnd.google-apps.shortcut" or  file.mimeType == "application/vnd.google-apps.folder"%}
+                        <svg focusable="false" viewBox="0 0 24 24" height="24px" width="24px" fill="#5f6368" class="a-s-fa-Ha-pa"><g><path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"></path><path d="M0 0h24v24H0z" fill="none"></path></g></svg>
+                    {% else %}
+                    
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" fill="#5f6368" class="a-s-fa-Ha-pa">
+                            <path d="M3 2c-.55 0-1 .45-1 1v18c0 .55.45 1 1 1h18c.55 0 1-.45 1-1V8c0-.55-.45-1-1-1h-7V2H3zm4 16H3v-6h4v6zm0-8H3V4h4v6zm14 10H7c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2v10c0 1.1-.9 2-2 2z"></path>
+                            <path d="M0 0h24v24H0z" fill="none"></path>
+                        </svg>
+                    {%endif%}
+                </div>
+                <div class="details">
+                    {% if file.mimeType == "application/vnd.google-apps.shortcut" or  file.mimeType == "application/vnd.google-apps.folder"%}
+                        <a target="_blank" href="https://drive.google.com/drive/folders/{{file.id}}">
+                            <h3 class="title">{{file.title}}</h3>
+                        </a>
+                    {% else %}
+                        <a target="_blank" href="https://drive.google.com/file/d/{{file.id}}/view?usp=drivesdk">
+                            <h3 class="title">{{file.title}}</h3>
+                        </a>
+                    {% endif %}
+                    <p>Size: <span class="quotaBytesUsed" quotaBytesUsed="{{ file.quotaBytesUsed }}"></span> MB</p>
+                    <p>Owner: <span> {{file.owners.0.displayName}} </span></p>
+                    {% if file.mimeType == "application/vnd.google-apps.shortcut" or  file.mimeType == "application/vnd.google-apps.folder"%}
+                        <button class="download-btn"><a target="_blank" href="https://drive.google.com/drive/folders/{{file.id}}">Open</a></button>
+                    {% else %}
+                        <button class="download-btn"><a target="_blank" href="https://drive.usercontent.google.com/download?id={{file.id}}&export=download&confirm=t">Download</a></button>
+                        <button class="download-btn"><a target="_blank" href="https://drive.google.com/file/d/{{file.id}}/view?usp=drivesdk">Open</a></button>    
+                    {%endif%}
+                </div>
                 
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="24px" width="24px" fill="#5f6368" class="a-s-fa-Ha-pa">
-                        <path d="M3 2c-.55 0-1 .45-1 1v18c0 .55.45 1 1 1h18c.55 0 1-.45 1-1V8c0-.55-.45-1-1-1h-7V2H3zm4 16H3v-6h4v6zm0-8H3V4h4v6zm14 10H7c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2v10c0 1.1-.9 2-2 2z"></path>
-                        <path d="M0 0h24v24H0z" fill="none"></path>
-                    </svg>
-                {%endif%}
             </div>
-            <div class="details">
-                {% if file.mimeType == "application/vnd.google-apps.shortcut" or  file.mimeType == "application/vnd.google-apps.folder"%}
-                    <a target="_blank" href="https://drive.google.com/drive/folders/{{file.id}}">
-                        <h3 class="title">{{file.title}}</h3>
-                    </a>
-                {% else %}
-                    <a target="_blank" href="https://drive.google.com/file/d/{{file.id}}/view?usp=drivesdk">
-                        <h3 class="title">{{file.title}}</h3>
-                    </a>
-                {% endif %}
-                <p>Size: <span class="quotaBytesUsed" quotaBytesUsed="{{ file.quotaBytesUsed }}"></span> MB</p>
-                <p>Owner: <span> {{file.owners.0.displayName}} </span></p>
-                {% if file.mimeType == "application/vnd.google-apps.shortcut" or  file.mimeType == "application/vnd.google-apps.folder"%}
-                    <button class="download-btn"><a target="_blank" href="https://drive.google.com/drive/folders/{{file.id}}">Open</a></button>
-                {% else %}
-                    <button class="download-btn"><a target="_blank" href="https://drive.usercontent.google.com/download?id={{file.id}}&export=download&confirm=t">Download</a></button>
-                    <button class="download-btn"><a target="_blank" href="https://drive.google.com/file/d/{{file.id}}/view?usp=drivesdk">Open</a></button>    
-                {%endif%}
-            </div>
-            
-        </div>
+        {% endif %}
     {%endfor%}
     {% if not search_result %}
         <h1>No results found</h1>
